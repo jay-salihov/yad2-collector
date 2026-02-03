@@ -13,11 +13,9 @@
   },
   "devDependencies": {
     "esbuild": "^0.24.0",
-    "esbuild-copy-static-files": "^0.1.0",
     "eslint": "^9.0.0",
     "typescript": "^5.6.0",
     "vitest": "^2.0.0",
-    "web-ext": "^8.0.0",
-    "@anthropic-ai/eslint-config": "^1.0.0"
+    "web-ext": "^8.0.0"
   }
 }

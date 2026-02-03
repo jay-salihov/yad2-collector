@@ -389,15 +389,15 @@ price, first_price, price_changes, city, neighborhood, address, description, ima
 
 ## Implementation Phases
 
-### Phase 1 — Project Setup & Foundation
-1. Init repo: `package.json`, `tsconfig.json`, esbuild config, `manifest.json`
-2. `shared/types.ts` — all interfaces and type definitions
-3. `shared/constants.ts` — URL patterns, DB config, field lists
-4. `background/db.ts` — IndexedDB open/upgrade, stores, indexes
-5. `content/extractor.ts` — __NEXT_DATA__ extraction from DOM
-6. `content/index.ts` — URL detection, page type routing, message dispatch
-7. `background/messages.ts` — message listener, routing
-8. `background/index.ts` — service worker wiring
+### Phase 1 — Project Setup & Foundation ✅
+1. ✅ Init repo: `package.json`, `tsconfig.json`, esbuild config, `manifest.json`
+2. ✅ `shared/types.ts` — all interfaces and type definitions
+3. ✅ `shared/constants.ts` — URL patterns, DB config, field lists
+4. ✅ `background/db.ts` — IndexedDB open/upgrade, stores, indexes, upsert, stats
+5. ✅ `content/extractor.ts` — __NEXT_DATA__ extraction from DOM
+6. ✅ `content/index.ts` — URL detection, page type routing, message dispatch
+7. ✅ `background/messages.ts` — message listener, routing
+8. ✅ `background/index.ts` — service worker wiring
 9. End-to-end smoke test: browse a Yad2 feed page → see data in IndexedDB via devtools
 
 ### Phase 2 — Parsers, Sanitization & Data Collection
@@ -405,10 +405,10 @@ price, first_price, price_changes, city, neighborhood, address, description, ima
 11. `content/parsers/common.ts` — `get()` helper, shared utilities
 12. `content/parsers/vehicles.ts` — feed + detail page normalizers
 13. `content/parsers/realestate.ts` — feed + detail page normalizers
-14. Price change detection + `price_history` writes in `background/db.ts`
+14. ✅ Price change detection + `price_history` writes in `background/db.ts`
 15. `content/observer.ts` — MutationObserver for SPA navigation
-16. Badge count updates
-17. `collection_log` tracking
+16. ✅ Badge count updates
+17. ✅ `collection_log` tracking
 
 ### Phase 3 — UI & Export
 18. `popup/popup.html` + `popup.ts` + `popup.css` — stats and controls
