@@ -12,7 +12,8 @@
     "start": "web-ext run --source-dir .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "eslint src/ && tsc --noEmit"
+    "lint": "eslint src/ && tsc --noEmit",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
@@ -20,6 +21,7 @@
     "eslint": "^9.0.0",
     "fake-indexeddb": "^6.2.5",
     "globals": "^17.3.0",
+    "husky": "^9.1.7",
     "typescript": "^5.6.0",
     "typescript-eslint": "^8.54.0",
     "vitest": "^2.0.0",
