@@ -81,9 +81,20 @@ DB name: `yad2_collector`, version 1. Three object stores:
 
 Work is tracked via GitHub issues. Use `gh` CLI to read issue details before starting work.
 
-- **Branch naming**: `<type>/<issue-or-slug>` — e.g. `fix/bug-004-vehicle-hand-km-description`, `feat/export-filters`
+- **Branch naming**: `<type>/<issue-or-slug>` — e.g. `fix/issue-5-remove-seller-pii`, `feat/export-filters`
 - **Types**: `fix/`, `feat/`, `refactor/`, `docs/`, `ci/`, `test/`
-- **Always branch off `main`** and open a PR back into `main`
+- **Always create a new branch off `main` before making any changes** — never commit directly to `main` or work on an unrelated branch
+- If changes were started on the wrong branch, stash them, checkout `main`, create the correct branch, then apply
+
+### Change Workflow
+
+1. `gh issue view <N>` — read the issue before starting
+2. `git checkout main && git checkout -b <type>/<slug>` — create branch off `main`
+3. Make changes, verify with `npm run lint`, `npm run build`, `npm run test`
+4. Commit with conventional message (see below)
+5. `git push -u origin <branch>` — push to remote
+6. `gh pr create` — open PR into `main` with `Closes #<N>` in the body to auto-close the issue on merge
+7. After merge: `git checkout main && git pull` — return to updated `main`
 
 ### Commit Messages
 
@@ -92,13 +103,19 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 ```
 <type>(<scope>): <description>
 
-fix(bug-004): collect hand, km data for vehicle listings
+fix(#5): remove seller PII collection from pipeline
 feat: add clear database button in extension settings
 ci: add GitHub Actions CI pipeline
 ```
 
 - **Types**: `fix`, `feat`, `refactor`, `docs`, `ci`, `test`, `chore`
-- **Scope** is optional — use issue/bug ID or module name when relevant
+- **Scope** is optional — use issue number (`#5`) or module name when relevant
+
+### Pull Requests
+
+- PR title: conventional commit format, e.g. `fix(#5): remove seller PII collection`
+- PR body must include `Closes #<N>` to link and auto-close the GitHub issue
+- Verify CI passes before requesting review
 
 ### CI Pipeline
 
