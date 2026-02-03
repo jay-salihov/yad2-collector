@@ -82,7 +82,6 @@ src/
 ├── export/            # CSV generation logic
 └── shared/            # Types, constants, sanitizer, message definitions
 tests/                 # Vitest test suite mirroring src/ structure
-context/               # Reference materials (Python scraper, sample API responses)
 ```
 
 ### Architecture

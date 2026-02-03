@@ -3,4 +3,3 @@ dist/
 web-ext-artifacts/
 *.tsbuildinfo
 .DS_Store
-context/*.py
