@@ -1,5 +1,5 @@
-import { Exporter } from "./base";
-import { Listing, Category, VehicleFields, RealEstateFields } from "../shared/types";
+import type { Exporter } from "./base";
+import type { Listing, Category, VehicleFields, RealEstateFields } from "../shared/types";
 
 const vehicleHeaders = [
   "token", "ad_type", "manufacturer", "model", "sub_model", "year",
@@ -13,19 +13,20 @@ const realEstateHeaders = [
   "description", "image_url", "first_seen", "last_seen", "seller_name", "updated_at"
 ];
 
-function escapeCsvField(field: any): string {
+type CsvField = string | number | null | undefined;
+
+function escapeCsvField(field: CsvField): string {
   if (field === null || typeof field === "undefined") {
     return "";
   }
   const str = String(field);
-  // If the string contains a comma, newline, or double quote, enclose it in double quotes.
-  if (/[\",\r\n]/.test(str)) {
+  if (/[",\r\n]/.test(str)) {
     return `"${str.replace(/"/g, '""')}"`;
   }
   return str;
 }
 
-function listingsToCsv(listings: Listing[], headers: string[], rowMapper: (l: Listing) => any[]): string {
+function listingsToCsv(listings: Listing[], headers: string[], rowMapper: (l: Listing) => CsvField[]): string {
   const rows = listings.map(rowMapper);
   const csvRows = [headers.join(","), ...rows.map(row => row.map(escapeCsvField).join(","))];
   return csvRows.join("\r\n");
@@ -46,7 +47,8 @@ export class CsvExporter implements Exporter {
       return createCsvBlob("");
     }
 
-    const category = listings[0].category;
+    const first = listings[0]!;
+    const category = first.category;
     const sameCategory = listings.every(l => l.category === category);
     if (!sameCategory) {
       throw new Error("Cannot export a mixed batch of listings to CSV. All listings must belong to the same category.");
@@ -65,7 +67,7 @@ export class CsvExporter implements Exporter {
     return "";
   }
 
-  private mapVehicleRow(listing: Listing): any[] {
+  private mapVehicleRow(listing: Listing): CsvField[] {
     const catFields = listing.categoryFields as VehicleFields;
     const detailFields = listing.detailFields;
     return [
@@ -91,7 +93,7 @@ export class CsvExporter implements Exporter {
     ];
   }
 
-  private mapRealEstateRow(listing: Listing): any[] {
+  private mapRealEstateRow(listing: Listing): CsvField[] {
     const catFields = listing.categoryFields as RealEstateFields;
     const detailFields = listing.detailFields;
     return [

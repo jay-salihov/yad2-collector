@@ -12,9 +12,13 @@
     "lint": "eslint src/ && tsc --noEmit"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "esbuild": "^0.24.0",
     "eslint": "^9.0.0",
+    "fake-indexeddb": "^6.2.5",
+    "globals": "^17.3.0",
     "typescript": "^5.6.0",
+    "typescript-eslint": "^8.54.0",
     "vitest": "^2.0.0",
     "web-ext": "^8.0.0"
   }

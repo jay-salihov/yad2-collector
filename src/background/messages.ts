@@ -11,8 +11,6 @@ import {
   writeCollectionLog,
 } from "./db";
 import { CsvExporter } from "../export/csv";
-import { Category } from "../shared/types";
-
 export function setupMessageListener(): void {
   browser.runtime.onMessage.addListener(
     (

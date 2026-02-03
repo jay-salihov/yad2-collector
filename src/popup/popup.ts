@@ -1,5 +1,5 @@
-import { GetStatsMessage, ExportCsvMessage } from "../shared/messages";
-import { CollectionStats } from "../background/db";
+import type { ExportCsvMessage } from "../shared/messages";
+import type { CollectionStats } from "../background/db";
 
 function $<T extends HTMLElement>(selector: string): T {
   const el = document.querySelector<T>(selector);
@@ -18,13 +18,14 @@ function setupEventListeners() {
   $("#export-all").addEventListener("click", () => handleExport("all"));
   $("#open-options").addEventListener("click", (e) => {
     e.preventDefault();
-    browser.runtime.openOptionsPage();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (browser.runtime as any).openOptionsPage();
   });
 }
 
 async function loadStats() {
   try {
-    const stats = await browser.runtime.sendMessage<GetStatsMessage, CollectionStats>({ type: "GET_STATS" });
+    const stats = (await browser.runtime.sendMessage({ type: "GET_STATS" })) as CollectionStats;
     updateStatsUI(stats);
   } catch (error) {
     console.error("Failed to load stats:", error);
@@ -54,8 +55,8 @@ async function handleExport(category: "vehicles" | "realestate" | "all") {
       type: "EXPORT_CSV",
       payload: { category },
     };
-    const response = await browser.runtime.sendMessage(message);
-    if (response && response.error) {
+    const response = (await browser.runtime.sendMessage(message)) as { error?: string };
+    if (response?.error) {
       throw new Error(response.error);
     }
   } catch (error) {
