@@ -1,0 +1,1 @@
+// MutationObserver for SPA navigation
