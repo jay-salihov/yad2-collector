@@ -96,7 +96,6 @@ describe("parseDetailListing", () => {
   it("produces listing with detailFields for valid item", () => {
     const item = makeVehicleItem({
       description: "Great car",
-      customer: { name: "John" },
       updatedAt: "2024-01-01",
     });
     const result = parseDetailListing(item, "cars");
@@ -104,7 +103,6 @@ describe("parseDetailListing", () => {
     expect(result!.pageType).toBe("detail");
     expect(result!.detailFields).not.toBeNull();
     expect(result!.detailFields!.description).toBe("Great car");
-    expect(result!.detailFields!.sellerName).toBe("John");
   });
 
   it("returns null for missing token", () => {

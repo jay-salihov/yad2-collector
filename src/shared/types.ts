@@ -58,7 +58,6 @@ export interface RealEstateFields {
 
 export interface DetailFields {
   description: string;
-  sellerName: string;
   updatedAt: string;
   additionalInfo: Record<string, string>;
   enrichedAt: string;

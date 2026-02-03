@@ -176,7 +176,6 @@ describe("upsertDetailListing", () => {
       pageType: "detail",
       detailFields: {
         description: "Great car",
-        sellerName: "John",
         updatedAt: "2024-06-01",
         additionalInfo: {},
         enrichedAt: "2024-06-01T00:00:00.000Z",
@@ -196,7 +195,6 @@ describe("upsertDetailListing", () => {
       pageType: "detail",
       detailFields: {
         description: "Brand new",
-        sellerName: "Seller",
         updatedAt: "2024-06-01",
         additionalInfo: {},
         enrichedAt: "2024-06-01T00:00:00.000Z",
@@ -221,7 +219,6 @@ describe("upsertDetailListing", () => {
       currentPrice: 70000,
       detailFields: {
         description: "Updated",
-        sellerName: "Seller",
         updatedAt: "2024-06-01",
         additionalInfo: {},
         enrichedAt: "2024-06-01T00:00:00.000Z",

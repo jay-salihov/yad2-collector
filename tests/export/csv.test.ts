@@ -101,7 +101,7 @@ describe("CsvExporter", () => {
       const text = await blobToText(blob);
       const lines = text.split("\r\n");
       expect(lines[0]).toBe(
-        "token,ad_type,manufacturer,model,sub_model,year,engine_type,hand,km,price,first_price,price_changes,address,description,image_url,first_seen,last_seen,seller_name,updated_at"
+        "token,ad_type,manufacturer,model,sub_model,year,engine_type,hand,km,price,first_price,price_changes,address,description,image_url,first_seen,last_seen,updated_at"
       );
       expect(lines).toHaveLength(2);
       // Check first few fields of data row
@@ -117,7 +117,7 @@ describe("CsvExporter", () => {
       const text = await blobToText(blob);
       const lines = text.split("\r\n");
       expect(lines[0]).toBe(
-        "token,ad_type,property_type,rooms,sqm,floor,condition,price,first_price,price_changes,city,neighborhood,address,description,image_url,first_seen,last_seen,seller_name,updated_at"
+        "token,ad_type,property_type,rooms,sqm,floor,condition,price,first_price,price_changes,city,neighborhood,address,description,image_url,first_seen,last_seen,updated_at"
       );
       const fields = lines[1]!.split(",");
       expect(fields[0]).toBe("re1");
@@ -155,7 +155,6 @@ describe("CsvExporter", () => {
       const listing = makeVehicleListing({
         detailFields: {
           description: "Line 1\nLine 2",
-          sellerName: "Seller",
           updatedAt: "2024-01-01",
           additionalInfo: {},
           enrichedAt: "2024-01-01",
@@ -183,14 +182,12 @@ describe("CsvExporter", () => {
       const blob = exporter.generate([listing]);
       const text = await blobToText(blob);
       const lines = text.split("\r\n");
-      // description, sellerName, updatedAt should be empty
+      // description, updatedAt should be empty
       const fields = lines[1]!.split(",");
       // description is index 13
       expect(fields[13]).toBe("");
-      // seller_name is index 17
+      // updated_at is index 17
       expect(fields[17]).toBe("");
-      // updated_at is index 18
-      expect(fields[18]).toBe("");
     });
   });
 });
