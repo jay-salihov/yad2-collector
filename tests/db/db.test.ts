@@ -268,8 +268,8 @@ describe("getStats", () => {
     ]);
 
     const stats = await db.getStats();
-    // 1 initial price record + 1 price change = 2 total in price_history
-    expect(stats.priceChanges).toBe(2);
+    // 1 actual price change (80000 → 75000); initial observation is not a change
+    expect(stats.priceChanges).toBe(1);
   });
 });
 

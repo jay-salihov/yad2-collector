@@ -284,10 +284,19 @@ export async function getStats(): Promise<CollectionStats> {
 
   const getTotalPriceChanges = (): Promise<number> => {
     return new Promise((resolve, reject) => {
-      const tx = db.transaction(STORES.PRICE_HISTORY, "readonly");
-      const store = tx.objectStore(STORES.PRICE_HISTORY);
-      const req = store.count();
-      req.onsuccess = () => resolve(req.result);
+      const tx = db.transaction(STORES.LISTINGS, "readonly");
+      const store = tx.objectStore(STORES.LISTINGS);
+      let total = 0;
+      const req = store.openCursor();
+      req.onsuccess = () => {
+        const cursor = req.result;
+        if (cursor) {
+          total += (cursor.value as Listing).priceChangeCount;
+          cursor.continue();
+        } else {
+          resolve(total);
+        }
+      };
       req.onerror = () => reject(req.error);
     });
   };

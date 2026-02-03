@@ -6,7 +6,8 @@
 | **Reported**    | 2026-02-03                                 |
 | **Reporter**    | Manual tester                              |
 | **Severity**    | High                                       |
-| **Status**      | Open                                       |
+| **Status**      | Resolved                                   |
+| **Resolved**    | 2026-02-03                                 |
 | **Component**   | Background / price change detection        |
 | **Browser**     | Firefox Developer Edition                  |
 | **Page**        | https://www.yad2.co.il/vehicles/cars       |
@@ -36,12 +37,22 @@ On a fresh install with an empty database, the popup reports price changes immed
 - **Step 5:** Without any page interaction, counters jump to 58 vehicles and 52 price changes.
 - **Step 6:** All counters reset to "--" and "last collected" resets to "never".
 
-## Possible Areas of Investigation
+## Root Cause
 
-- **Upsert logic in background:** The price change detection during `upsert` may be comparing against stale or partially written records from the same batch, treating every insert as a change.
-- **Duplicate message processing:** The `MutationObserver` or content script may be sending duplicate `LISTINGS_BATCH` messages, causing listings to be "upserted" against themselves and triggering false price change counts.
-- **Stats reset:** The counters resetting to "--" and "never" after a few minutes suggests the stats query may be scoped to a time window, or the database/service worker may be getting torn down and losing state.
-- **Debounce or observer issues:** The 300ms debounce on the `MutationObserver` may not be sufficient for SPA hydration, leading to multiple rapid extractions of the same data.
+Two confirmed root causes were identified:
+
+1. **Price change stat miscounted initial observations:** `getStats()` counted all `price_history` records (which includes the initial price recorded for every new listing), instead of summing the per-listing `priceChangeCount` field. On first collection, every listing with a price created a `price_history` record, inflating the counter. For 40 vehicles with 36 having prices, 36 price "changes" were reported despite zero actual changes.
+
+2. **Service worker message listener race condition:** The `onMessage` listener was registered after an async `await openDB()` call in the background script init. Per MV3 rules, event listeners must be registered synchronously at the top level. When the service worker was terminated and re-woken by a message (e.g., popup opening), the message arrived before the async `openDB()` completed, so no listener was registered yet. The message was dropped, the popup received no response, `updateStatsUI()` never ran, and the HTML defaults ("--", "never") remained.
+
+## Fix
+
+- `src/background/db.ts`: Changed `getTotalPriceChanges()` to iterate the `listings` store with a cursor and sum each listing's `priceChangeCount`, instead of counting all `price_history` records.
+- `src/background/index.ts`: Moved `setupMessageListener()` to module-level synchronous execution before any async work. `openDB()` is now a non-blocking warm-up call since every DB function already calls `openDB()` internally.
+
+## Note on Step 5
+
+The 40-to-58 vehicle count increase without interaction could not be reproduced or root-caused in code review. It may be related to Yad2 SPA behavior (lazy loading additional results, URL parameter updates triggering re-extraction). This should be retested after the fix is deployed — if it persists, it should be filed as a separate bug.
 
 ## Impact
 

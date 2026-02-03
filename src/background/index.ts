@@ -1,12 +1,12 @@
 import { openDB } from "./db";
 import { setupMessageListener } from "./messages";
 
-async function init(): Promise<void> {
-  await openDB();
-  setupMessageListener();
-  console.debug("[yad2-collector] Background service worker initialized");
-}
+// Must register listener synchronously per MV3 rules
+setupMessageListener();
 
-init().catch((err) => {
-  console.error("[yad2-collector] Failed to initialize:", err);
+// Warm up the DB connection (non-blocking)
+openDB().catch((err) => {
+  console.error("[yad2-collector] Failed to open DB:", err);
 });
+
+console.debug("[yad2-collector] Background service worker initialized");
