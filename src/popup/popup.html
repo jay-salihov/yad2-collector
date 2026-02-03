@@ -1,13 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="popup.css" />
-  </head>
-  <body>
-    <div id="app">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yad2 Collector</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
       <h1>Yad2 Collector</h1>
-    </div>
-    <script src="popup.js" type="module"></script>
-  </body>
+    </header>
+    <main>
+      <section class="stats">
+        <h2>Collection Stats</h2>
+        <div class="stats-grid">
+          <span>Vehicles:</span><span id="stats-vehicles">--</span>
+          <span>Real Estate:</span><span id="stats-realestate">--</span>
+          <span>Total:</span><span id="stats-total">--</span>
+          <span>Price Changes:</span><span id="stats-price-changes">--</span>
+        </div>
+        <p class="last-collected">Last collected: <span id="stats-last-collected">never</span></p>
+      </section>
+      <section class="export">
+        <h2>Export Data</h2>
+        <div class="button-group">
+          <button id="export-vehicles">Export Vehicles CSV</button>
+          <button id="export-realestate">Export Real Estate CSV</button>
+          <button id="export-all">Export All CSV</button>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <a href="#" id="open-options">Settings</a>
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
 </html>
