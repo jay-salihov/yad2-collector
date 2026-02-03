@@ -12,15 +12,38 @@
       <h1>Settings</h1>
     </header>
     <main>
-      <p>Settings for the Yad2 Collector extension will be available here in a future version.</p>
-      <p>This may include features like:</p>
-      <ul>
-        <li>Configuring automatic data collection</li>
-        <li>Setting up filters for listings</li>
-        <li>Managing stored data</li>
-      </ul>
+      <section class="data-management">
+        <h2>Data Management</h2>
+        <div class="stats-summary">
+          <div class="stats-grid">
+            <span>Vehicles:</span><span id="stats-vehicles">--</span>
+            <span>Real Estate:</span><span id="stats-realestate">--</span>
+            <span>Total listings:</span><span id="stats-total">--</span>
+            <span>Price changes:</span><span id="stats-price-changes">--</span>
+          </div>
+        </div>
+        <button id="clear-db-btn" class="danger-btn">Clear All Data</button>
+      </section>
     </main>
   </div>
+
+  <dialog id="confirm-dialog">
+    <div class="dialog-content">
+      <h3>Clear all data?</h3>
+      <p>
+        This will permanently delete
+        <strong><span id="dialog-total">0</span> listings</strong>,
+        all price history, and collection logs. This cannot be undone.
+      </p>
+      <p class="dialog-hint">You can export your data before clearing.</p>
+      <div class="dialog-actions">
+        <button id="dialog-export" class="export-btn">Export Data First</button>
+        <button id="dialog-confirm" class="danger-btn">Clear</button>
+        <button id="dialog-cancel">Cancel</button>
+      </div>
+    </div>
+  </dialog>
+
   <script src="options.js"></script>
 </body>
 </html>

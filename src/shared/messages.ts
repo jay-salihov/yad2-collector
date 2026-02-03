@@ -30,8 +30,14 @@ export interface ExportCsvMessage {
   };
 }
 
+export interface ClearDatabaseMessage {
+  type: "CLEAR_DATABASE";
+}
+
 export type ContentMessage = ListingsBatchMessage | ListingDetailMessage;
 
 export type PopupMessage = GetStatsMessage | ExportCsvMessage;
 
-export type ExtensionMessage = ContentMessage | PopupMessage;
+export type OptionsMessage = GetStatsMessage | ExportCsvMessage | ClearDatabaseMessage;
+
+export type ExtensionMessage = ContentMessage | PopupMessage | OptionsMessage;

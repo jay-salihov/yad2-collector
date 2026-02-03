@@ -4,6 +4,7 @@ import type {
   ListingDetailMessage,
 } from "../shared/messages";
 import {
+  clearDatabase,
   getListings,
   getStats,
   upsertDetailListing,
@@ -35,6 +36,9 @@ export function setupMessageListener(): void {
 
         case "EXPORT_CSV":
           return handleExportCsv((message as ExportCsvMessage).payload);
+
+        case "CLEAR_DATABASE":
+          return handleClearDatabase();
 
         default:
           console.warn("[yad2-collector] Unknown message type:", msg);
@@ -160,6 +164,17 @@ function getDateString(): string {
   return `${year}-${month}-${day}`;
 }
 
+
+async function handleClearDatabase(): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await clearDatabase();
+    console.debug("[yad2-collector] Database cleared");
+    return { ok: true };
+  } catch (error) {
+    console.error("[yad2-collector] Clear database failed:", error);
+    return { ok: false, error: String(error) };
+  }
+}
 
 function updateBadge(newCount: number): void {
   if (newCount > 0) {

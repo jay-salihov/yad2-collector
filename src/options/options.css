@@ -31,14 +31,138 @@ main {
   line-height: 1.6;
 }
 
-p {
-  margin-bottom: 1em;
+/* Data Management Section */
+
+.data-management h2 {
+  margin: 0 0 16px;
+  font-size: 18px;
 }
 
-ul {
-  padding-left: 20px;
+.stats-summary {
+  margin-bottom: 20px;
 }
 
-li {
-  margin-bottom: 0.5em;
+.stats-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 12px;
+}
+
+.stats-grid span:nth-child(odd) {
+  font-weight: 500;
+}
+
+.stats-grid span:nth-child(even) {
+  font-weight: 600;
+  text-align: right;
+}
+
+/* Buttons */
+
+.danger-btn {
+  background-color: #dc3545;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.danger-btn:hover {
+  background-color: #c82333;
+}
+
+.danger-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.export-btn {
+  background-color: #ff7f00;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.export-btn:hover {
+  background-color: #e67300;
+}
+
+.export-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Confirm Dialog */
+
+#confirm-dialog {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  padding: 0;
+  max-width: 440px;
+  width: 90%;
+}
+
+#confirm-dialog::backdrop {
+  background-color: rgba(0,0,0,0.5);
+}
+
+.dialog-content {
+  padding: 24px;
+}
+
+.dialog-content h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  color: #333;
+}
+
+.dialog-content p {
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+
+.dialog-hint {
+  color: #666;
+  font-size: 13px;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+  justify-content: flex-end;
+}
+
+.dialog-actions button {
+  min-width: 80px;
+}
+
+#dialog-cancel {
+  background-color: #e9ecef;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#dialog-cancel:hover {
+  background-color: #dee2e6;
+}
+
+#dialog-cancel:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

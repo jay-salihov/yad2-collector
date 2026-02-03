@@ -336,6 +336,22 @@ export async function getStats(): Promise<CollectionStats> {
   };
 }
 
+export async function clearDatabase(): Promise<void> {
+  const db = await openDB();
+  const tx = db.transaction(
+    [STORES.LISTINGS, STORES.PRICE_HISTORY, STORES.COLLECTION_LOG],
+    "readwrite",
+  );
+  tx.objectStore(STORES.LISTINGS).clear();
+  tx.objectStore(STORES.PRICE_HISTORY).clear();
+  tx.objectStore(STORES.COLLECTION_LOG).clear();
+
+  await new Promise<void>((resolve, reject) => {
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
 export async function getListings(category?: Category): Promise<Listing[]> {
   const db = await openDB();
   const tx = db.transaction(STORES.LISTINGS, "readonly");
