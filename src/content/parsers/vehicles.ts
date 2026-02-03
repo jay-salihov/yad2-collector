@@ -27,7 +27,7 @@ function buildVehicleFields(raw: RawObject): VehicleFields {
     engineType: getText(raw, "engineType"),
     engineVolumeCc: getString(raw, "engineVolume"),
     gearBox: getText(raw, "gearBox"),
-    hand: toNumberOrNull(get(raw, "handNumber")),
+    hand: toNumberOrNull(get(raw, "handNumber")) ?? toNumberOrNull(get(raw, "hand", "id")),
     km: toNumberOrNull(get(raw, "kilometers")),
     color: getText(raw, "color"),
   };

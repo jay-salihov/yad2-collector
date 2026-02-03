@@ -4,7 +4,23 @@ import type {
   CollectionLogEntry,
   Listing,
   PriceRecord,
+  VehicleFields,
+  RealEstateFields,
 } from "../shared/types";
+
+type CategoryFields = VehicleFields | RealEstateFields;
+
+/** Merge category fields, preferring non-null new values over existing ones. */
+function mergeCategoryFields(existing: CategoryFields, incoming: CategoryFields): CategoryFields {
+  const merged = { ...existing };
+  for (const key of Object.keys(incoming) as (keyof typeof incoming)[]) {
+    const val = incoming[key];
+    if (val !== null && val !== undefined && val !== "") {
+      (merged as Record<string, unknown>)[key] = val;
+    }
+  }
+  return merged;
+}
 
 let dbInstance: IDBDatabase | null = null;
 
@@ -126,6 +142,7 @@ export async function upsertListings(
                 lastSeenAt: now,
                 // Preserve feed data but allow detail enrichment
                 pageType: listing.pageType,
+                categoryFields: mergeCategoryFields(existing.categoryFields, listing.categoryFields),
                 rawData: { ...existing.rawData, ...listing.rawData },
               };
 
@@ -193,6 +210,7 @@ export async function upsertDetailListing(listing: Listing): Promise<void> {
         const updated: Listing = {
           ...existing,
           lastSeenAt: now,
+          categoryFields: mergeCategoryFields(existing.categoryFields, listing.categoryFields),
           detailFields: listing.detailFields,
           rawData: { ...existing.rawData, ...listing.rawData },
         };
