@@ -13,6 +13,7 @@ const VALID_CATEGORIES: ReadonlySet<string> = new Set<Category>([
 const VALID_AD_TYPES: ReadonlySet<string> = new Set<AdType>([
   "private",
   "commercial",
+  "agency",
   "platinum",
   "boost",
   "solo",

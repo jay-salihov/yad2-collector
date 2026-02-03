@@ -8,24 +8,38 @@ import { get, getString, getText, toNumberOrNull } from "./common";
 
 type RawObject = Record<string, unknown>;
 
-const REALESTATE_AD_TYPES: AdType[] = ["private", "commercial", "yad1"];
+const REALESTATE_AD_TYPES: AdType[] = ["private", "agency", "platinum"];
 
 function buildRealEstateFields(raw: RawObject): RealEstateFields {
   return {
-    propertyType: getText(raw, "propertyType"),
-    rooms: toNumberOrNull(get(raw, "rooms")),
-    squareMeters: toNumberOrNull(get(raw, "squareMeter")),
-    squareMetersBuild: toNumberOrNull(get(raw, "squareMeterBuild")),
-    floor: toNumberOrNull(get(raw, "floor", "value")),
+    propertyType:
+      getText(raw, "propertyType") ||
+      getString(raw, "additionalDetails", "property", "text"),
+    rooms: toNumberOrNull(
+      get(raw, "rooms") ?? get(raw, "additionalDetails", "roomsCount"),
+    ),
+    squareMeters: toNumberOrNull(
+      get(raw, "squareMeter") ?? get(raw, "additionalDetails", "squareMeter"),
+    ),
+    squareMetersBuild: toNumberOrNull(
+      get(raw, "squareMeterBuild") ?? get(raw, "metaData", "squareMeterBuild"),
+    ),
+    floor: toNumberOrNull(
+      get(raw, "floor", "value") ?? get(raw, "address", "house", "floor"),
+    ),
     totalFloors: toNumberOrNull(get(raw, "totalFloors")),
-    condition: getText(raw, "condition"),
+    condition:
+      getText(raw, "condition") ||
+      getString(raw, "additionalDetails", "propertyCondition", "id"),
     neighborhood: getString(raw, "address", "neighborhood", "text"),
     city: getString(raw, "address", "city", "text"),
   };
 }
 
 function buildTitle(raw: RawObject): string {
-  const propertyType = getText(raw, "propertyType");
+  const propertyType =
+    getText(raw, "propertyType") ||
+    getString(raw, "additionalDetails", "property", "text");
   const city = getString(raw, "address", "city", "text");
   return [propertyType, city].filter(Boolean).join(", ");
 }

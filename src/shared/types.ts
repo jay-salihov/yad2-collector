@@ -5,6 +5,7 @@ export type PageType = "feed" | "detail";
 export type AdType =
   | "private"
   | "commercial"
+  | "agency"
   | "platinum"
   | "boost"
   | "solo"
