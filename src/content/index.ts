@@ -6,7 +6,13 @@ import type {
 } from "../shared/messages";
 import { sanitizeListings, sanitizeListing } from "../shared/sanitizer";
 import type { Category, PageType } from "../shared/types";
-import { extractNextData, findFeedQuery, findItemQuery } from "./extractor";
+import {
+  extractNextData,
+  extractFromFetchResponse,
+  findFeedQuery,
+  findItemQuery,
+} from "./extractor";
+import type { NextDataQueries } from "./extractor";
 import { setupNavigationObserver } from "./observer";
 import {
   parseFeedListings as parseVehicleFeed,
@@ -48,10 +54,7 @@ function detectPage(url: URL): PageInfo | null {
   return { category, subcategory, pageType };
 }
 
-function processFeedPage(page: PageInfo): void {
-  const data = extractNextData();
-  if (!data) return;
-
+function processFeedPage(page: PageInfo, data: NextDataQueries): void {
   const feedData = findFeedQuery(data);
   if (!feedData) {
     console.debug("[yad2-collector] No feed query found on this page");
@@ -86,10 +89,7 @@ function processFeedPage(page: PageInfo): void {
   );
 }
 
-function processDetailPage(page: PageInfo): void {
-  const data = extractNextData();
-  if (!data) return;
-
+function processDetailPage(page: PageInfo, data: NextDataQueries): void {
   const itemData = findItemQuery(data);
   if (!itemData) {
     console.debug("[yad2-collector] No item query found on detail page");
@@ -130,7 +130,7 @@ function sendMessage(message: ContentMessage): void {
   });
 }
 
-function processCurrentPage(): void {
+function processPageWithData(data: NextDataQueries): void {
   const page = detectPage(new URL(location.href));
   if (!page) return;
 
@@ -139,14 +139,40 @@ function processCurrentPage(): void {
   );
 
   if (page.pageType === "feed") {
-    processFeedPage(page);
+    processFeedPage(page, data);
   } else {
-    processDetailPage(page);
+    processDetailPage(page, data);
   }
+}
+
+function processCurrentPage(): void {
+  const data = extractNextData();
+  if (!data) return;
+  processPageWithData(data);
+}
+
+const FETCH_MESSAGE_TYPE = "__yad2_collector_next_data__";
+
+function setupFetchDataListener(): void {
+  window.addEventListener("message", (event: MessageEvent) => {
+    if (event.source !== window) return;
+
+    const msg = event.data as { type?: string; payload?: unknown } | undefined;
+    if (msg?.type !== FETCH_MESSAGE_TYPE) return;
+
+    const data = extractFromFetchResponse(msg.payload);
+    if (!data) return;
+
+    console.debug(
+      "[yad2-collector] Received intercepted /_next/data/ response",
+    );
+    processPageWithData(data);
+  });
 }
 
 function main(): void {
   processCurrentPage();
+  setupFetchDataListener();
   setupNavigationObserver(processCurrentPage);
 }
 

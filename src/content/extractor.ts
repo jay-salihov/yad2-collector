@@ -68,6 +68,26 @@ export function findItemQuery(
   return null;
 }
 
+/**
+ * Extract queries from a /_next/data/ fetch response.
+ * The response format is { pageProps: { dehydratedState: { queries: [...] } } }
+ * (one level shallower than __NEXT_DATA__ which wraps this under "props").
+ */
+export function extractFromFetchResponse(payload: unknown): NextDataQueries | null {
+  const queries = getNestedValue(
+    payload,
+    "pageProps",
+    "dehydratedState",
+    "queries",
+  );
+
+  if (!Array.isArray(queries)) {
+    return null;
+  }
+
+  return { queries: queries as NextDataQuery[] };
+}
+
 function getNestedValue(obj: unknown, ...keys: string[]): unknown {
   let current: unknown = obj;
   for (const key of keys) {

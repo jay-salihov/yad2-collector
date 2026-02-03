@@ -7,6 +7,7 @@ const isWatch = process.argv.includes("--watch");
 const entryPoints = [
   { in: "src/background/index.ts", out: "background" },
   { in: "src/content/index.ts", out: "content" },
+  { in: "src/content/page-script.ts", out: "page-script" },
   { in: "src/popup/popup.ts", out: "popup" },
   { in: "src/options/options.ts", out: "options" },
 ];

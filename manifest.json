@@ -15,6 +15,15 @@
         "https://www.yad2.co.il/vehicles/*",
         "https://www.yad2.co.il/realestate/*"
       ],
+      "js": ["dist/page-script.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://www.yad2.co.il/vehicles/*",
+        "https://www.yad2.co.il/realestate/*"
+      ],
       "js": ["dist/content.js"],
       "run_at": "document_idle"
     }
