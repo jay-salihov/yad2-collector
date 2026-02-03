@@ -28,6 +28,7 @@ async function loadStats(): Promise<CollectionStats | null> {
     $("#stats-realestate").textContent = String(stats.realestate);
     $("#stats-total").textContent = String(stats.total);
     $("#stats-price-changes").textContent = String(stats.priceChanges);
+    $<HTMLButtonElement>("#clear-db-btn").disabled = stats.total === 0;
     return stats;
   } catch (error) {
     console.error("[yad2-collector] Failed to load stats:", error);
@@ -50,7 +51,6 @@ function closeDialog() {
 function setDialogButtons(disabled: boolean) {
   $<HTMLButtonElement>("#dialog-export").disabled = disabled;
   $<HTMLButtonElement>("#dialog-confirm").disabled = disabled;
-  $<HTMLButtonElement>("#dialog-cancel").disabled = disabled;
 }
 
 async function handleExport() {
