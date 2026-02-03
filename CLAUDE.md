@@ -73,7 +73,6 @@ DB name: `yad2_collector`, version 1. Three object stores:
 - `snake_case` for DB columns and CSV headers; `camelCase` for TypeScript code
 - Console logs prefixed with `[yad2-collector]`
 - CSV exports include UTF-8 BOM for Hebrew character support in Excel
-- Parsers reference patterns from `context/` directory (Python scraper models/parser)
 
 ## Workflow
 
@@ -133,8 +132,4 @@ Husky runs `npm run lint && npm run test` before every commit. Ensure these pass
 
 ## Development Status
 
-Phases 1-3 complete (core pipeline, parsers, UI/export). Phase 4 (testing & polish) is next — see `context/PLAN.md` for the full roadmap. Test directories exist under `tests/` but are placeholder `.gitkeep` files.
-
-## Reference Materials
-
-The `context/` directory contains Python scraper source and sample Yad2 API responses used as reference for building the parsers. These files are partially gitignored (`.py` files).
+Phases 1-3 complete (core pipeline, parsers, UI/export). Phase 4 (testing & polish) is next. Test directories exist under `tests/` but are placeholder `.gitkeep` files.
