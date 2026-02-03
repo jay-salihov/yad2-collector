@@ -1,13 +1,17 @@
 import type {
+  ExportCsvMessage,
   ListingsBatchMessage,
   ListingDetailMessage,
 } from "../shared/messages";
 import {
+  getListings,
   getStats,
   upsertDetailListing,
   upsertListings,
   writeCollectionLog,
 } from "./db";
+import { CsvExporter } from "../export/csv";
+import { Category } from "../shared/types";
 
 export function setupMessageListener(): void {
   browser.runtime.onMessage.addListener(
@@ -32,8 +36,7 @@ export function setupMessageListener(): void {
           return getStats();
 
         case "EXPORT_CSV":
-          // Phase 3
-          return Promise.resolve({ error: "Export not yet implemented" });
+          return handleExportCsv((message as ExportCsvMessage).payload);
 
         default:
           console.warn("[yad2-collector] Unknown message type:", msg);
@@ -92,6 +95,73 @@ async function handleListingDetail(
 
   return { ok: true };
 }
+
+async function handleExportCsv(
+  payload: ExportCsvMessage["payload"],
+): Promise<{ ok: boolean; error?: string }> {
+  const { category } = payload;
+  const exporter = new CsvExporter();
+
+  try {
+    if (category === "all") {
+      // Export vehicles and realestate as separate files
+      const [vehicles, realestate] = await Promise.all([
+        getListings("vehicles"),
+        getListings("realestate"),
+      ]);
+
+      if (vehicles.length > 0) {
+        await downloadFile(
+          exporter.generate(vehicles),
+          `yad2_vehicles_${getDateString()}.csv`,
+        );
+      }
+      if (realestate.length > 0) {
+        await downloadFile(
+          exporter.generate(realestate),
+          `yad2_realestate_${getDateString()}.csv`,
+        );
+      }
+    } else {
+      const listings = await getListings(category);
+      if (listings.length === 0) {
+        console.info(`[yad2-collector] No listings to export for ${category}`);
+        return { ok: true };
+      }
+      const blob = exporter.generate(listings);
+      const filename = `yad2_${category}_${getDateString()}.csv`;
+      await downloadFile(blob, filename);
+    }
+
+    return { ok: true };
+  } catch (error) {
+    console.error("[yad2-collector] Export failed:", error);
+    return { ok: false, error: String(error) };
+  }
+}
+
+async function downloadFile(blob: Blob, filename: string): Promise<void> {
+  const url = URL.createObjectURL(blob);
+  try {
+    await browser.downloads.download({
+      url,
+      filename,
+      saveAs: true, // Prompt user for location
+    });
+  } finally {
+    // Timeout needed for Firefox to start the download
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+}
+
+function getDateString(): string {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 
 function updateBadge(newCount: number): void {
   if (newCount > 0) {
