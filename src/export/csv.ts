@@ -4,13 +4,13 @@ import type { Listing, Category, VehicleFields, RealEstateFields } from "../shar
 const vehicleHeaders = [
   "token", "ad_type", "manufacturer", "model", "sub_model", "year",
   "engine_type", "hand", "km", "price", "first_price", "price_changes",
-  "address", "description", "image_url", "first_seen", "last_seen", "seller_name", "updated_at"
+  "address", "description", "image_url", "first_seen", "last_seen", "updated_at"
 ];
 
 const realEstateHeaders = [
   "token", "ad_type", "property_type", "rooms", "sqm", "floor", "condition",
   "price", "first_price", "price_changes", "city", "neighborhood", "address",
-  "description", "image_url", "first_seen", "last_seen", "seller_name", "updated_at"
+  "description", "image_url", "first_seen", "last_seen", "updated_at"
 ];
 
 type CsvField = string | number | null | undefined;
@@ -88,7 +88,6 @@ export class CsvExporter implements Exporter {
       listing.imageUrl,
       listing.firstSeenAt,
       listing.lastSeenAt,
-      detailFields?.sellerName,
       detailFields?.updatedAt
     ];
   }
@@ -114,7 +113,6 @@ export class CsvExporter implements Exporter {
       listing.imageUrl,
       listing.firstSeenAt,
       listing.lastSeenAt,
-      detailFields?.sellerName,
       detailFields?.updatedAt
     ];
   }

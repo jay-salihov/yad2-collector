@@ -112,7 +112,6 @@ export function parseDetailListing(
 
   const detailFields: DetailFields = {
     description: getString(itemData, "description"),
-    sellerName: getString(itemData, "customer", "name"),
     updatedAt: getString(itemData, "updatedAt"),
     additionalInfo: {},
     enrichedAt: new Date().toISOString(),

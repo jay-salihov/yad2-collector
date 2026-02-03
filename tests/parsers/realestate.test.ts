@@ -72,14 +72,12 @@ describe("parseDetailListing", () => {
   it("produces listing with detailFields", () => {
     const item = makeRealEstateItem({
       description: "Nice apartment",
-      customer: { name: "Seller" },
       updatedAt: "2024-06-01",
     });
     const result = parseDetailListing(item, "forsale");
     expect(result).not.toBeNull();
     expect(result!.pageType).toBe("detail");
     expect(result!.detailFields!.description).toBe("Nice apartment");
-    expect(result!.detailFields!.sellerName).toBe("Seller");
   });
 
   it("returns null for missing token", () => {
