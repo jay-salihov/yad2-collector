@@ -1,5 +1,6 @@
 import { DB_NAME, DB_VERSION, STORES } from "../shared/constants";
 import type {
+  Category,
   CollectionLogEntry,
   Listing,
   PriceRecord,
@@ -324,4 +325,19 @@ export async function getStats(): Promise<CollectionStats> {
     priceChanges,
     lastCollectedAt,
   };
+}
+
+export async function getListings(category?: Category): Promise<Listing[]> {
+  const db = await openDB();
+  const tx = db.transaction(STORES.LISTINGS, "readonly");
+  const store = tx.objectStore(STORES.LISTINGS);
+
+  const request = category
+    ? store.index("category").getAll(IDBKeyRange.only(category))
+    : store.getAll();
+
+  return new Promise((resolve, reject) => {
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
 }
