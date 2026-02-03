@@ -410,12 +410,12 @@ price, first_price, price_changes, city, neighborhood, address, description, ima
 16. ✅ Badge count updates
 17. ✅ `collection_log` tracking
 
-### Phase 3 — UI & Export
-18. `popup/popup.html` + `popup.ts` + `popup.css` — stats and controls
-19. `export/base.ts` — exporter interface
-20. `export/csv.ts` — CSV generation with BOM encoding
-21. Wire export buttons → background → download
-22. `options/options.html` + `options.ts` — placeholder settings page
+### Phase 3 — UI & Export ✅
+18. ✅ `popup/popup.html` + `popup.ts` + `popup.css` — stats and controls
+19. ✅ `export/base.ts` — exporter interface
+20. ✅ `export/csv.ts` — CSV generation with BOM encoding
+21. ✅ Wire export buttons → background → download
+22. ✅ `options/options.html` + `options.ts` — placeholder settings page
 
 ### Phase 4 — Testing & Polish
 23. Unit tests: parsers (with fixture data from real pages)
