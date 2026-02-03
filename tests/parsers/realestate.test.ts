@@ -32,8 +32,8 @@ describe("parseFeedListings", () => {
   it("parses listings from multiple ad types", () => {
     const feedData: RawObject = {
       private: [makeRealEstateItem({ token: "p1" })],
-      commercial: [makeRealEstateItem({ token: "c1" })],
-      yad1: [makeRealEstateItem({ token: "y1" })],
+      agency: [makeRealEstateItem({ token: "a1" })],
+      platinum: [makeRealEstateItem({ token: "pl1" })],
     };
     const result = parseFeedListings(feedData, "forsale");
     expect(result).toHaveLength(3);

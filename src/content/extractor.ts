@@ -49,7 +49,7 @@ export function findFeedQuery(
 ): Record<string, unknown> | null {
   for (const q of data.queries) {
     const key = q.queryKey;
-    if (Array.isArray(key) && key[0] === "feed") {
+    if (Array.isArray(key) && typeof key[0] === "string" && (key[0] === "feed" || key[0].endsWith("-feed"))) {
       return (q.state?.data as Record<string, unknown>) ?? null;
     }
   }
