@@ -75,6 +75,45 @@ DB name: `yad2_collector`, version 1. Three object stores:
 - CSV exports include UTF-8 BOM for Hebrew character support in Excel
 - Parsers reference patterns from `context/` directory (Python scraper models/parser)
 
+## Workflow
+
+### GitHub Issues & Branches
+
+Work is tracked via GitHub issues. Use `gh` CLI to read issue details before starting work.
+
+- **Branch naming**: `<type>/<issue-or-slug>` — e.g. `fix/bug-004-vehicle-hand-km-description`, `feat/export-filters`
+- **Types**: `fix/`, `feat/`, `refactor/`, `docs/`, `ci/`, `test/`
+- **Always branch off `main`** and open a PR back into `main`
+
+### Commit Messages
+
+Follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+<type>(<scope>): <description>
+
+fix(bug-004): collect hand, km data for vehicle listings
+feat: add clear database button in extension settings
+ci: add GitHub Actions CI pipeline
+```
+
+- **Types**: `fix`, `feat`, `refactor`, `docs`, `ci`, `test`, `chore`
+- **Scope** is optional — use issue/bug ID or module name when relevant
+
+### CI Pipeline
+
+GitHub Actions (`.github/workflows/ci.yml`) runs on PRs to `main` and pushes to `main`:
+
+1. `npm ci`
+2. `npm run lint` — ESLint + TypeScript type check
+3. `npm run build` — esbuild bundle
+4. `npm run test` — vitest
+5. `npx web-ext lint` — extension manifest validation
+
+### Pre-commit Hook
+
+Husky runs `npm run lint && npm run test` before every commit. Ensure these pass locally before committing.
+
 ## Development Status
 
 Phases 1-3 complete (core pipeline, parsers, UI/export). Phase 4 (testing & polish) is next — see `context/PLAN.md` for the full roadmap. Test directories exist under `tests/` but are placeholder `.gitkeep` files.
