@@ -11,19 +11,60 @@
     <header>
       <h1>Settings</h1>
     </header>
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="vehicles">Vehicle Collection Logic</button>
+      <button class="tab-btn" data-tab="realestate">Real Estate Collection Logic</button>
+      <button class="tab-btn" data-tab="data">Data Management</button>
+    </nav>
     <main>
-      <section class="data-management">
-        <h2>Data Management</h2>
-        <div class="stats-summary">
-          <div class="stats-grid">
-            <span>Vehicles:</span><span id="stats-vehicles">--</span>
-            <span>Real Estate:</span><span id="stats-realestate">--</span>
-            <span>Total listings:</span><span id="stats-total">--</span>
-            <span>Price changes:</span><span id="stats-price-changes">--</span>
+      <div class="tab-panel active" id="tab-vehicles">
+        <section class="rule-section">
+          <h2>Scanning Logic</h2>
+          <p class="rule-subtext">Only listings matching these conditions will be scanned</p>
+          <div class="rule-groups" id="vehicle-scan-groups"></div>
+          <button class="add-group-btn" data-target="vehicle-scan-groups">+</button>
+          <p class="rule-status"><span id="vehicle-scan-total">--</span> listings &middot; 0 ignored by these conditions</p>
+        </section>
+        <section class="rule-section">
+          <h2>Export Logic</h2>
+          <p class="rule-subtext">Only listings matching these conditions will be exported</p>
+          <div class="rule-groups" id="vehicle-export-groups"></div>
+          <button class="add-group-btn" data-target="vehicle-export-groups">+</button>
+          <p class="rule-status">0 / <span id="vehicle-export-total">--</span> listings matching these conditions</p>
+        </section>
+      </div>
+
+      <div class="tab-panel" id="tab-realestate">
+        <section class="rule-section">
+          <h2>Scanning Logic</h2>
+          <p class="rule-subtext">Only listings matching these conditions will be scanned</p>
+          <div class="rule-groups" id="realestate-scan-groups"></div>
+          <button class="add-group-btn" data-target="realestate-scan-groups">+</button>
+          <p class="rule-status"><span id="realestate-scan-total">--</span> listings &middot; 0 ignored by these conditions</p>
+        </section>
+        <section class="rule-section">
+          <h2>Export Logic</h2>
+          <p class="rule-subtext">Only listings matching these conditions will be exported</p>
+          <div class="rule-groups" id="realestate-export-groups"></div>
+          <button class="add-group-btn" data-target="realestate-export-groups">+</button>
+          <p class="rule-status">0 / <span id="realestate-export-total">--</span> listings matching these conditions</p>
+        </section>
+      </div>
+
+      <div class="tab-panel" id="tab-data">
+        <section class="data-management">
+          <h2>Data Management</h2>
+          <div class="stats-summary">
+            <div class="stats-grid">
+              <span>Vehicles:</span><span id="stats-vehicles">--</span>
+              <span>Real Estate:</span><span id="stats-realestate">--</span>
+              <span>Total listings:</span><span id="stats-total">--</span>
+              <span>Price changes:</span><span id="stats-price-changes">--</span>
+            </div>
           </div>
-        </div>
-        <button id="clear-db-btn" class="danger-btn">Clear All Data</button>
-      </section>
+          <button id="clear-db-btn" class="danger-btn">Clear All Data</button>
+        </section>
+      </div>
     </main>
   </div>
 
@@ -43,6 +84,15 @@
       </div>
     </div>
   </dialog>
+
+  <template id="condition-row-template">
+    <div class="condition-row">
+      <select class="field-select"></select>
+      <select class="operator-select"></select>
+      <input class="value-input" type="text" placeholder="Value">
+      <button class="remove-row-btn">&times;</button>
+    </div>
+  </template>
 
   <script src="options.js"></script>
 </body>
